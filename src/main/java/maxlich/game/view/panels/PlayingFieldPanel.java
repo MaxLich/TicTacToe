@@ -1,15 +1,17 @@
 package maxlich.game.view.panels;
 
 import maxlich.game.util.PlayerNumber;
+import maxlich.game.view.Fonts;
 import maxlich.game.view.View;
 
 import javax.swing.*;
-import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableColumnModel;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class PlayingFieldPanel extends AbstractPanel {
     private static final int CELL_SIZE = 100;
@@ -40,6 +42,17 @@ public class PlayingFieldPanel extends AbstractPanel {
         fieldTable.setRowSelectionAllowed(false);
         //fieldTable.getTableHeader().setVisible(false);
         fieldTable.setTableHeader(null);
+        fieldTable.setFont(Fonts.TABLE_FONT);
+        fieldTable.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int selectedRow = fieldTable.getSelectedRow();
+                int selectedColumn = fieldTable.getSelectedColumn();
+                System.out.println(selectedRow);
+                System.out.println(selectedColumn);
+                view.fireClickFieldCell(selectedRow,selectedColumn);
+            }
+        });
       //  fieldTable.setAlignmentX(CENTER_ALIGNMENT);
        // fieldTable.setPreferredSize(new Dimension(3*CELL_SIZE,3*CELL_SIZE));
 

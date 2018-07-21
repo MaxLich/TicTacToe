@@ -10,4 +10,6 @@ public abstract class Model {
     public abstract TableModel getFieldTableModel();
 
     public abstract PlayerNumber getPlayerNumberWhoMakesAMove();
+
+    public abstract boolean putFigureOnFieldCell(int selectedRow, int selectedColumn);
 }

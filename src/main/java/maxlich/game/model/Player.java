@@ -5,20 +5,24 @@ import maxlich.game.util.PlayerNumber;
 public class Player {
     private PlayerNumber number;
     private String name;
+    private Figure figure; //фигура, которую ставит игрок: Х или О
     private int wins;
 
-    public Player(PlayerNumber number) {
+    public Player(PlayerNumber number, Figure figure) {
         this.number = number;
         name = number.getTitle();
+        this.figure = figure;
     }
 
-    public Player(PlayerNumber number, String name) {
+    public Player(PlayerNumber number, String name, Figure figure) {
         this.number = number;
         this.name = name;
+        this.figure = figure;
     }
 
-    public Player(String name) {
+    public Player(String name, Figure figure) {
         this.name = name;
+        this.figure = figure;
     }
 
     public PlayerNumber getNumber() {
@@ -35,6 +39,14 @@ public class Player {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public Figure getFigure() {
+        return figure;
+    }
+
+    public void setFigure(Figure figure) {
+        this.figure = figure;
     }
 
     public int getWins() {

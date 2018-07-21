@@ -26,4 +26,5 @@ public abstract class Controller {
     public abstract void onLoadWhoseTurnInfo();
     public abstract void onLoadFieldTableModel();
 
+    public abstract void onClickFieldCell(int selectedRow, int selectedColumn);
 }

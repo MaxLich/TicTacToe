@@ -40,7 +40,6 @@ public class ViewWindowGUI extends JFrame implements View {
         initFrame();
     }
 
-    //инициализация главной панели и фрейма
     private void initMainPanel() {
         mainPanel = new JPanel();
         mainPanel.setLayout(new BorderLayout());
@@ -136,6 +135,11 @@ public class ViewWindowGUI extends JFrame implements View {
     @Override
     public void loadFieldTableModel(TableModel tableModel) {
         playingFieldPanel.loadTableModel(tableModel);
+    }
+
+    @Override
+    public void fireClickFieldCell(int selectedRow, int selectedColumn) {
+        controller.onClickFieldCell(selectedRow,selectedColumn);
     }
 
     //вывод сообщений

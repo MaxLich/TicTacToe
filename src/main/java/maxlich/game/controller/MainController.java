@@ -31,4 +31,12 @@ public class MainController extends Controller {
         TableModel tableModel = model.getFieldTableModel();
         view.loadFieldTableModel(tableModel);
     }
+
+    @Override
+    public void onClickFieldCell(int selectedRow, int selectedColumn) {
+        boolean isFigurePut = model.putFigureOnFieldCell(selectedRow,selectedColumn);
+        if (!isFigurePut)
+            return;
+        onLoadWhoseTurnInfo();
+    }
 }

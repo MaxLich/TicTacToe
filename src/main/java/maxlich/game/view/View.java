@@ -19,4 +19,5 @@ public interface View {
     void fireLoadFieldTableModel();
     void loadFieldTableModel(TableModel tableModel);
 
+    void fireClickFieldCell(int selectedRow, int selectedColumn);
 }
