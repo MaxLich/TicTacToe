@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-3.2.xsd">
+
+    <import resource="props-files.xml"/>
+
+    <bean id="mainModel" class="maxlich.game.model.MainModel">
+
+    </bean>
+
+    <bean id="mainController" class="maxlich.game.controller.MainController">
+        <constructor-arg name="model" ref="mainModel"/>
+    </bean>
+
+
+    <bean id="viewWindowGUI" class="maxlich.game.view.ViewWindowGUI" init-method="init">
+        <constructor-arg value="${main-window.title}"/>
+        <constructor-arg ref="mainController"/>
+        <property name="winWidth" value="${main-window.width}"/>
+        <property name="winHeight" value="${main-window.height}"/>
+    </bean>
+
+
+<!--    <bean id="game" class="maxlich.exmpl.Game">
+        <constructor-arg ref="view"/>
+        <constructor-arg ref="controller"/>
+        <constructor-arg ref="model"/>
+    </bean>-->
+
+</beans>
