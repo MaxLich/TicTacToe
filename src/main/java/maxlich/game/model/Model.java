@@ -8,4 +8,6 @@ public abstract class Model {
     public abstract String getPlayerName(PlayerNumber playerNumber);
 
     public abstract TableModel getFieldTableModel();
+
+    public abstract PlayerNumber getPlayerNumberWhoMakesAMove();
 }

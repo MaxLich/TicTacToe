@@ -23,6 +23,7 @@ public abstract class Controller {
     public abstract void init();
 
     public abstract void onLoadPlayerName(PlayerNumber playerNumber);
-
+    public abstract void onLoadWhoseTurnInfo();
     public abstract void onLoadFieldTableModel();
+
 }

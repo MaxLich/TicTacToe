@@ -17,7 +17,13 @@ public class MainController extends Controller {
     @Override
     public void onLoadPlayerName(PlayerNumber playerNumber) {
         String playerName = model.getPlayerName(playerNumber);
-        view.loadPlayerName(playerNumber, playerName);
+        view.showPlayerName(playerNumber, playerName);
+    }
+
+    @Override
+    public void onLoadWhoseTurnInfo() {
+        PlayerNumber playerWhoMakeMove = model.getPlayerNumberWhoMakesAMove();
+        view.showWhoseTurn(playerWhoMakeMove);
     }
 
     @Override

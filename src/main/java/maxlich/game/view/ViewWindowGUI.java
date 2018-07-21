@@ -72,13 +72,15 @@ public class ViewWindowGUI extends JFrame implements View {
 
     private JPanel createTopPanel() {
         mainTitle = new JLabel("Партия ");
+        mainTitle.setFont(Fonts.H1);
         JPanel panel = new JPanel();
         panel.add(mainTitle);
         return panel;
     }
 
     private JPanel createBottomPanel() {
-        mainResult = new JLabel();
+        mainResult = new JLabel("Player 1 won!!!");
+        mainResult.setFont(Fonts.H2);
         JPanel panel = new JPanel();
         panel.add(mainResult);
         return panel;
@@ -96,7 +98,7 @@ public class ViewWindowGUI extends JFrame implements View {
         setJMenuBar(createMenuBar());*/
         setSize(winWidth, winHeight);
 
-        //setResizable(false);
+        setResizable(false);
         setContentPane(mainPanel);
         setVisible(true);
     }
@@ -107,13 +109,23 @@ public class ViewWindowGUI extends JFrame implements View {
     }
 
     @Override
-    public void loadPlayerName(PlayerNumber playerNumber, String playerName) {
+    public void showPlayerName(PlayerNumber playerNumber, String playerName) {
         switch (playerNumber) {
             case PLAYER_1: player1Panel.loadPlayerName(playerName);
             break;
             case PLAYER_2: player2Panel.loadPlayerName(playerName);
             break;
         }
+    }
+
+    @Override
+    public void fireLoadWhoseTurnInfo() {
+        controller.onLoadWhoseTurnInfo();
+    }
+
+    @Override
+    public void showWhoseTurn(PlayerNumber playerNumber) {
+        playingFieldPanel.loadWhoseTurnInfo(playerNumber);
     }
 
     @Override

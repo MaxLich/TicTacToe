@@ -9,7 +9,7 @@
     <import resource="props-files.xml"/>
 
     <bean id="mainModel" class="maxlich.game.model.MainModel">
-
+        <property name="partyCountInGame" value="${game.party-count-in-game}"/>
     </bean>
 
     <bean id="mainController" class="maxlich.game.controller.MainController">

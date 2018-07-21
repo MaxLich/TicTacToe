@@ -6,6 +6,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Vector;
 
 public class MainModel extends Model {
     private String[][] field = {
@@ -13,12 +14,18 @@ public class MainModel extends Model {
             {" "," "," "},
             {" "," "," "}
     };
-    private DefaultTableModel fieldTableModel = new DefaultTableModel(3,3) {
-        {
-            for (String[] cell : field) {
-                addRow(cell);
-            }
+
+    private DefaultTableModel fieldTableModel = new DefaultTableModel(field, null/*new String[]{"1","2","3"}*/) {
+        @Override
+        public int getRowCount() {
+            return 3;
         }
+
+        @Override
+        public int getColumnCount() {
+            return 3;
+        }
+
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
@@ -26,7 +33,9 @@ public class MainModel extends Model {
     };
 
     private Map<PlayerNumber, Player> playerListMap = new HashMap<>();
-    private PlayerNumber whoMakesAMove;
+    private PlayerNumber whoMakesAMove = PlayerNumber.PLAYER_1; //номер игрока, который сейчас совершает ход
+    private int partyNumber = 1; //номер партии игры
+    private int partyCountInGame = 3; //общее количество партий в игре (может быть равно 1,3,5,7,9)
 
     public MainModel() {
         playerListMap.put(PlayerNumber.PLAYER_1, new Player(PlayerNumber.PLAYER_1));
@@ -38,8 +47,25 @@ public class MainModel extends Model {
         return playerListMap.get(playerNumber).getName();
     }
 
+
     @Override
     public TableModel getFieldTableModel() {
         return fieldTableModel;
+    }
+
+    public PlayerNumber getPlayerNumberWhoMakesAMove() {
+        return whoMakesAMove;
+    }
+
+    public void setPlayerNumberWhoMakesAMove(PlayerNumber whoMakesAMove) {
+        this.whoMakesAMove = whoMakesAMove;
+    }
+
+    public int getPartyCountInGame() {
+        return partyCountInGame;
+    }
+
+    public void setPartyCountInGame(int partyCountInGame) {
+        this.partyCountInGame = partyCountInGame;
     }
 }

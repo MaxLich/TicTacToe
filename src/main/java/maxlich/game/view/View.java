@@ -10,9 +10,13 @@ public interface View {
     void showTextMessage(String text);
     void showTextMessage(String text, boolean isPositive);
 
+    void fireLoadWhoseTurnInfo();
+    void showWhoseTurn(PlayerNumber playerNumber);
+
     void fireLoadPlayerName(PlayerNumber playerNumber);
-    void loadPlayerName(PlayerNumber playerNumber, String playerName);
+    void showPlayerName(PlayerNumber playerNumber, String playerName);
 
     void fireLoadFieldTableModel();
     void loadFieldTableModel(TableModel tableModel);
+
 }
