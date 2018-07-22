@@ -8,7 +8,13 @@ apply plugin: 'java'
 apply plugin: 'application'
 
 sourceCompatibility = 1.8
-//def springVersion = '5.0.2.RELEASE'
+
+project.ext {
+    springVersion = '5.0.2.RELEASE'
+    fileSeparator = File.separator
+}
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 repositories {
     mavenCentral()
@@ -16,9 +22,9 @@ repositories {
 
 dependencies {
     compile(
-            [group: 'org.springframework', name: 'spring-context', version: '5.0.2.RELEASE'],
-            [group: 'org.springframework', name: 'spring-context-support', version: '5.0.2.RELEASE'],
-            [group: 'org.springframework', name: 'spring-tx', version: '5.0.2.RELEASE']
+            [group: 'org.springframework', name: 'spring-context', version: project.ext.springVersion],
+            [group: 'org.springframework', name: 'spring-context-support', version: project.ext.springVersion],
+            [group: 'org.springframework', name: 'spring-tx', version: project.ext.springVersion]
     )
 }
 
@@ -26,3 +32,100 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 
+/**
+ * ================ Common tasks ================
+ **/
+startScripts {
+    mainClassName = 'maxlich.game.Game'
+    defaultJvmOpts = [
+            //        "-server",
+            "-Xss256k",
+            "-Xms512m",
+            "-Xmx512m",
+            "-Xmn256m",
+            "-XX:MaxPermSize=256m",
+            "-XX:PermSize=256m",
+            "-XX:+HeapDumpOnOutOfMemoryError",
+            "-Dfile.encoding=UTF-8",
+            //        "-Djava.awt.headless=true",
+            "-XX:+UseParNewGC",
+            "-XX:+UseConcMarkSweepGC",
+            "-XX:+CMSParallelRemarkEnabled",
+            "-XX:SurvivorRatio=8",
+            "-XX:MaxTenuringThreshold=1",
+            "-XX:CMSInitiatingOccupancyFraction=75",
+            "-XX:+UseCMSInitiatingOccupancyOnly",
+            "-XX:+UseTLAB",
+    ]
+    windowsStartScriptGenerator.template = resources.text.fromFile('./env/windowsStartScript.txt')
+}
+
+/*applicationDistribution.from('./config') {
+    into 'config'
+}
+
+applicationDistribution.from('./libs') {
+    into 'lib'
+}*/
+
+compileJava {
+    targetCompatibility = '1.8'
+    sourceCompatibility = '1.8'
+}
+
+jar {
+    doFirst {
+        manifest {
+            attributes(
+                    "Created-By": "gradle $gradle.gradleVersion, jdk " + System.getProperty("java.version"),
+                    "Built-By": "Max Lich",
+                    "Specification-Title": project.name,
+                    "Specification-Vendor": "Max Lich",
+                    "Specification-Version": project.version,
+                    "Implementation-Vendor": "Max Lich",
+                    "Implementation-Title": "tic-tac-toe",
+                    "Implementation-Version": project.version,
+            )
+        }
+    }
+
+}
+/*
+task javadocJar(type: Jar, dependsOn: 'javadoc') {
+    from javadoc.destinationDir
+
+    doFirst {
+        manifest {
+            attributes(
+                    "Created-By": "gradle $gradle.gradleVersion, jdk " + System.getProperty("java.version"),
+                    "Built-By": "Fruity Team",
+                    "Specification-Title": project.name,
+                    "Specification-Vendor": "Fruity Team",
+                    "Specification-Version": "1.0.0",
+                    "Implementation-Vendor": "Fruity Team",
+                    "Implementation-Title": "safety-peer-display javadoc.",
+                    "Implementation-Version": project.version
+            )
+        }
+    }
+}
+
+task sourceJar(type: Jar, dependsOn: 'classes') {
+    from sourceSets.main.allJava
+
+    doFirst {
+        manifest {
+            attributes(
+                    "Created-By": "gradle $gradle.gradleVersion, jdk " + System.getProperty("java.version"),
+                    "Built-By": "Fruity Team",
+                    "Specification-Title": project.name,
+                    "Specification-Vendor": "Fruity Team",
+                    "Specification-Version": "1.0.0",
+                    "Implementation-Vendor": "Fruity Team",
+                    "Implementation-Title": "safety-peer-display sources.",
+                    "Implementation-Version": project.version
+            )
+        }
+    }
+}
+*/
