@@ -1,7 +1,11 @@
 group 'maxlich.game'
-version '0.0.5'
+version '0.8.0'
 
+println "Build OS: " + System.getProperty("os.name")
+
+apply plugin: 'base'
 apply plugin: 'java'
+apply plugin: 'application'
 
 sourceCompatibility = 1.8
 //def springVersion = '5.0.2.RELEASE'

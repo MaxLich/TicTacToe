@@ -51,12 +51,26 @@ public class MainController extends Controller {
         if (!isFigurePut)
             return;
 
-        //PlayerNumber winnerInCurrParty = model.getWinnerInCurrParty();
+        ResultType gameResult = model.getGameResult();
+        if (gameResult != null) {
+            view.setFieldActivity(false);
+            view.showPartyResult("Игра завершена. Итоги всей игры: " + gameResult.getMessage() + "!!!");
+            return;
+        }
+
         ResultType partyResult = model.getPartyResult();
         if (partyResult != null) {
-            view.showPartyResult(partyResult.getMessage() + "!!!");
-            //view.increaseCountOfWinsForPlayer(partyResult.getWinner());
             view.setFieldActivity(false);
+            view.showPartyResult("Партия завершена. Итоги партии: " + partyResult.getMessage() + "!!!");
+            if (partyResult != ResultType.DRAW)
+                onLoadPlayerWinsCount(partyResult.getWinner());
+            boolean isNextParty = view.showDialog("Партия завершена", "Следующая партия?");
+            if (isNextParty) {
+                model.initNewParty();
+                onLoadPartyNumber();
+                view.clearPartyResult();
+                view.setFieldActivity(true);
+            }
             return;
         }
 

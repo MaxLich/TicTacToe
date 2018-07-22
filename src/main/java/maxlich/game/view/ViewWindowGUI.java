@@ -25,7 +25,6 @@ public class ViewWindowGUI extends JFrame implements View {
     private JLabel mainTitle;
     private JLabel mainResult;
 
-
     public ViewWindowGUI(String title, Controller controller) throws HeadlessException {
         super(title);
         this.controller = controller;
@@ -37,6 +36,7 @@ public class ViewWindowGUI extends JFrame implements View {
         controller.init();
         initMainPanel();
         initFrame();
+        localizeDialogs();
     }
 
     private void initMainPanel() {
@@ -56,16 +56,6 @@ public class ViewWindowGUI extends JFrame implements View {
         mainPanel.add(playingFieldPanel,BorderLayout.CENTER);
         mainPanel.add(player2Panel,BorderLayout.EAST);
         mainPanel.add(createBottomPanel(),BorderLayout.SOUTH);
-
-/*        JPanel topPanel = createTopPanel();
-        JPanel middlePanel = createMiddlePanel();
-        JPanel bottomPanel = createBottomPanel();
-
-        //mainPanel.add(topPanel);
-        //mainPanel.add(Box.createVerticalStrut(10));
-        mainPanel.add(middlePanel);
-        //mainPanel.add(Box.createVerticalStrut(10));
-        //mainPanel.add(bottomPanel);*/
     }
 
     private JPanel createTopPanel() {
@@ -101,6 +91,13 @@ public class ViewWindowGUI extends JFrame implements View {
         setResizable(false);
         setContentPane(mainPanel);
         setVisible(true);
+    }
+
+    private void localizeDialogs() {
+        UIManager.put("OptionPane.yesButtonText"   , "Да"    );
+        UIManager.put("OptionPane.noButtonText"    , "Нет"   );
+        UIManager.put("OptionPane.cancelButtonText", "Отмена");
+        UIManager.put("OptionPane.okButtonText"    , "Готово");
     }
 
     @Override
@@ -174,11 +171,16 @@ public class ViewWindowGUI extends JFrame implements View {
     }
 
     @Override
+    public void clearPartyResult() {
+        mainResult.setText(" ");
+    }
+
+    @Override
     public void setFieldActivity(boolean isActive) {
         playingFieldPanel.setFieldTableActivity(isActive);
     }
 
-    //вывод сообщений
+    //вывод сообщений и диалоговых окон
     public void showTextMessage(String title, String text, boolean isPositive) {
         int typeMessage = isPositive ? JOptionPane.INFORMATION_MESSAGE : JOptionPane.ERROR_MESSAGE;
         JOptionPane.showMessageDialog(this, text, title, typeMessage);
@@ -202,6 +204,11 @@ public class ViewWindowGUI extends JFrame implements View {
         showTextMessage(title, text, isPositive);
     }
 
+    @Override
+    public boolean showDialog(String title, String text) {
+        int result = JOptionPane.showConfirmDialog(this, text, title, JOptionPane.YES_NO_OPTION);
+        return result == JOptionPane.YES_OPTION;
+    }
 
     //Getters and Setters
 
