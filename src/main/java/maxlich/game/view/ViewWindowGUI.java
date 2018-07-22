@@ -12,6 +12,7 @@ import java.awt.*;
 
 public class ViewWindowGUI extends JFrame implements View {
     private static final int WINDOW_WIDTH = 500, WINDOW_HEIGHT = 600;
+    public static final String PARTY_TITLE_PREFIX = "Партия ";
 
     private Controller controller;
     private JPanel mainPanel;
@@ -30,8 +31,6 @@ public class ViewWindowGUI extends JFrame implements View {
         this.controller = controller;
         controller.setView(this);
     }
-
-
 
     public void init() {
         //logger().info("Init the view...");
@@ -70,12 +69,14 @@ public class ViewWindowGUI extends JFrame implements View {
     }
 
     private JPanel createTopPanel() {
-        mainTitle = new JLabel("Партия ");
+        mainTitle = new JLabel();
+        fireLoadPartyNumber();
         mainTitle.setFont(Fonts.H1);
         JPanel panel = new JPanel();
         panel.add(mainTitle);
         return panel;
     }
+
 
     private JPanel createBottomPanel() {
         mainResult = new JLabel(" ");
@@ -100,6 +101,16 @@ public class ViewWindowGUI extends JFrame implements View {
         setResizable(false);
         setContentPane(mainPanel);
         setVisible(true);
+    }
+
+    @Override
+    public void fireLoadPartyNumber() {
+        controller.onLoadPartyNumber();
+    }
+
+    @Override
+    public void showPartyTitle(int partyNumber) {
+        mainTitle.setText(PARTY_TITLE_PREFIX + partyNumber);
     }
 
     @Override

@@ -84,6 +84,15 @@ public class MainModel extends Model {
         }
     }
 
+    @Override
+    public int getPartyNumber() {
+        return partyNumber;
+    }
+
+    public void setPartyNumber(int partyNumber) {
+        this.partyNumber = partyNumber;
+    }
+
     public int getPartyCountInGame() {
         return partyCountInGame;
     }

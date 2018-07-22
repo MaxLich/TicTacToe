@@ -13,6 +13,9 @@ public interface View {
     void fireLoadWhoseTurnInfo();
     void showWhoseTurn(PlayerNumber playerNumber);
 
+    void fireLoadPartyNumber();
+    void showPartyTitle(int partyNumber);
+
     void fireLoadPlayerName(PlayerNumber playerNumber);
     void showPlayerName(PlayerNumber playerNumber, String playerName);
 
@@ -22,5 +25,6 @@ public interface View {
     void fireClickFieldCell(int selectedRow, int selectedColumn);
     void showPartyResult(String resultMessage);
     void setFieldActivity(boolean isActive);
+
 
 }

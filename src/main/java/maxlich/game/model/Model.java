@@ -12,6 +12,8 @@ public abstract class Model {
 
     public abstract PlayerNumber getPlayerNumberWhoMakesAMove();
 
+    public abstract int getPartyNumber();
+
     public abstract boolean putFigureOnFieldCell(int selectedRow, int selectedColumn);
 
    // public abstract boolean isFieldFull();

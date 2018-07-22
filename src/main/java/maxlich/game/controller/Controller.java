@@ -5,8 +5,8 @@ import maxlich.game.util.PlayerNumber;
 import maxlich.game.view.View;
 
 public abstract class Controller {
-    protected View view;
-    protected Model model;
+    View view;
+    Model model;
 
     Controller(Model model) {
         this.model = model;
@@ -22,6 +22,7 @@ public abstract class Controller {
 
     public abstract void init();
 
+    public abstract void onLoadPartyNumber();
     public abstract void onLoadPlayerName(PlayerNumber playerNumber);
     public abstract void onLoadWhoseTurnInfo();
     public abstract void onLoadFieldTableModel();

@@ -16,6 +16,12 @@ public class MainController extends Controller {
     }
 
     @Override
+    public void onLoadPartyNumber() {
+        int partyNumber = model.getPartyNumber();
+        view.showPartyTitle(partyNumber);
+    }
+
+    @Override
     public void onLoadPlayerName(PlayerNumber playerNumber) {
         String playerName = model.getPlayerName(playerNumber);
         view.showPlayerName(playerNumber, playerName);
