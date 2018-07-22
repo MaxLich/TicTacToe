@@ -1,5 +1,6 @@
 # TicTacToe
 The 'TicTacToe' game with GUI on the Swing
+
 Игра "Крестики-нолики" с графическим интерфейсом на библиотеке Swing
 
 Как запустить:
