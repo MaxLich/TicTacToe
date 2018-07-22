@@ -17,4 +17,6 @@ public interface Model {
    // public abstract PlayerNumber getWinnerInCurrParty();
     ResultType getPartyResult();
     ResultType getGameResult();
+
+    void initNewParty();
 }

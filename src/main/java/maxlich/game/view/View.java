@@ -9,6 +9,7 @@ public interface View {
     void showTextMessage(String title, String text);
     void showTextMessage(String text);
     void showTextMessage(String text, boolean isPositive);
+    boolean showDialog(String title, String text);
 
     void fireLoadWhoseTurnInfo();
     void showWhoseTurn(PlayerNumber playerNumber);
@@ -27,6 +28,7 @@ public interface View {
 
     void fireClickFieldCell(int selectedRow, int selectedColumn);
     void showPartyResult(String resultMessage);
+    void clearPartyResult();
     void setFieldActivity(boolean isActive);
 
    // void increaseCountOfWinsForPlayer(PlayerNumber winner);

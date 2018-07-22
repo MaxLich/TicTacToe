@@ -10,13 +10,13 @@ import java.util.Map;
 
 public class MainModel implements Model {
     private static final int FIELD_SIZE = 3; //размер поля: 3х3
-    private final Figure[][] emptyField = {
+    private final static Figure[][] EMPTY_FIELD = {
             {Figure.NONE, Figure.NONE, Figure.NONE},
             {Figure.NONE, Figure.NONE, Figure.NONE},
             {Figure.NONE, Figure.NONE, Figure.NONE}
     };
 
-    private DefaultTableModel fieldTableModel = new DefaultTableModel(emptyField, null) {
+    private DefaultTableModel fieldTableModel = new DefaultTableModel(EMPTY_FIELD, null) {
         @Override
         public int getRowCount() {
             return 3;
@@ -34,10 +34,9 @@ public class MainModel implements Model {
         }
     };
 
-    private Map<PlayerNumber, Player> playerListMap = new HashMap<>(); //список игроков (в виде пар "номер игрока - игрок")
+    private final Map<PlayerNumber, Player> playerListMap = new HashMap<>(); //список игроков (в виде пар "номер игрока - игрок")
     private PlayerNumber whoMakesFirstMove = PlayerNumber.PLAYER_1; //номер игрока, который ходит первым
     private PlayerNumber whoMakesAMove = PlayerNumber.PLAYER_1; //номер игрока, который сейчас совершает ход
-    //private boolean isFieldFull = false; //флаг полного заполнения поля фигурами
 
     private PlayerNumber winnerInCurrParty = null; //победитель в текущей партии
     private PlayerNumber winnerOfThisGame = null; //победитель в этой игре (серии партий)
@@ -115,17 +114,30 @@ public class MainModel implements Model {
         fieldTableModel.setValueAt(playerListMap.get(whoMakesAMove).getFigure(), selectedRow, selectedColumn);
         boolean isFieldFull = isFieldFull();
         boolean isWinnerFound = checkForWinnerInCurrParty(selectedRow, selectedColumn);
-/*        if (winnerInCurrParty != null)
-            return true;*/
 
         if (!isWinnerFound && !isFieldFull) {
             changePlayerNumberWhoMakesAMove();
         } else {
             if (isFieldFull && !isWinnerFound)
                 partyResult = ResultType.DRAW;
+            checkForGameEnd();
         }
 
         return true;
+    }
+
+    private void checkForGameEnd() {
+        if (partyNumber != partyCountInGame)
+            return;
+
+        int player1Wins = playerListMap.get(PlayerNumber.PLAYER_1).getWins();
+        int player2Wins = playerListMap.get(PlayerNumber.PLAYER_2).getWins();
+        if (player1Wins > player2Wins)
+            gameResult = ResultType.PLAYER_1_WON;
+        else if (player1Wins < player2Wins)
+            gameResult = ResultType.PLAYER_2_WON;
+        else
+            gameResult = ResultType.DRAW;
     }
 
     // Проверяет, есть ли победитель: true - победитель есть, false - победителя нет (ничья или игра продолжается)
@@ -202,7 +214,18 @@ public class MainModel implements Model {
         return cycleCount == FIELD_SIZE * FIELD_SIZE / 2 + 1;
     }
 
-   /* @Override
+    @Override
+    public void initNewParty() {
+        partyNumber++;
+        whoMakesFirstMove = partyResult != null && partyResult != ResultType.DRAW ?
+                partyResult.getWinner() : PlayerNumber.PLAYER_1;
+        whoMakesAMove = whoMakesFirstMove;
+        cycleCount = 0;
+        fieldTableModel.setDataVector(EMPTY_FIELD,null);
+        partyResult = null;
+    }
+
+    /* @Override
     public boolean isFieldFull() {
         return isFieldFull;
     }
