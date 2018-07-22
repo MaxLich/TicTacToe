@@ -19,6 +19,9 @@ public interface View {
     void fireLoadPlayerName(PlayerNumber playerNumber);
     void showPlayerName(PlayerNumber playerNumber, String playerName);
 
+    void fireLoadPlayerWinsCount(PlayerNumber playerNumber);
+    void showPlayerWinsCount(PlayerNumber playerNumber, int winsCount);
+
     void fireLoadFieldTableModel();
     void loadFieldTableModel(TableModel tableModel);
 
@@ -26,5 +29,5 @@ public interface View {
     void showPartyResult(String resultMessage);
     void setFieldActivity(boolean isActive);
 
-
+   // void increaseCountOfWinsForPlayer(PlayerNumber winner);
 }

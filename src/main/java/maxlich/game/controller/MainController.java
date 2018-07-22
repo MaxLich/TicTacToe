@@ -28,6 +28,12 @@ public class MainController extends Controller {
     }
 
     @Override
+    public void onLoadPlayerWinsCount(PlayerNumber playerNumber) {
+        int playerWinsCount = model.getPlayerWinsCount(playerNumber);
+        view.showPlayerWinsCount(playerNumber,playerWinsCount);
+    }
+
+    @Override
     public void onLoadWhoseTurnInfo() {
         PlayerNumber playerWhoMakeMove = model.getPlayerNumberWhoMakesAMove();
         view.showWhoseTurn(playerWhoMakeMove);
@@ -49,6 +55,7 @@ public class MainController extends Controller {
         ResultType partyResult = model.getPartyResult();
         if (partyResult != null) {
             view.showPartyResult(partyResult.getMessage() + "!!!");
+            //view.increaseCountOfWinsForPlayer(partyResult.getWinner());
             view.setFieldActivity(false);
             return;
         }

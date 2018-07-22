@@ -5,22 +5,16 @@ import maxlich.game.util.ResultType;
 
 import javax.swing.table.TableModel;
 
-public abstract class Model {
-    public abstract String getPlayerName(PlayerNumber playerNumber);
-
-    public abstract TableModel getFieldTableModel();
-
-    public abstract PlayerNumber getPlayerNumberWhoMakesAMove();
-
-    public abstract int getPartyNumber();
-
-    public abstract boolean putFigureOnFieldCell(int selectedRow, int selectedColumn);
-
+public interface Model {
+    String getPlayerName(PlayerNumber playerNumber);
+    int getPlayerWinsCount(PlayerNumber playerNumber);
+    TableModel getFieldTableModel();
+    PlayerNumber getPlayerNumberWhoMakesAMove();
+    int getPartyNumber();
+    boolean putFigureOnFieldCell(int selectedRow, int selectedColumn);
    // public abstract boolean isFieldFull();
 
    // public abstract PlayerNumber getWinnerInCurrParty();
-
-    public abstract ResultType getPartyResult();
-
-    public abstract ResultType getGameResult();
+    ResultType getPartyResult();
+    ResultType getGameResult();
 }

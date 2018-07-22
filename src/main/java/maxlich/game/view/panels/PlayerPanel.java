@@ -42,9 +42,14 @@ public class PlayerPanel extends AbstractPanel {
     @Override
     public void init() {
         view.fireLoadPlayerName(playerNumber);
+        view.fireLoadPlayerWinsCount(playerNumber);
     }
 
     public void loadPlayerName(String playerName) {
         playerNameLabel.setText(playerName);
+    }
+
+    public void loadPlayerWinsCount(int wins) {
+        playerWinsLabel.setText("" + wins);
     }
 }

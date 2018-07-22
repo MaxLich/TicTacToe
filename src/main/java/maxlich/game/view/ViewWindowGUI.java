@@ -129,6 +129,21 @@ public class ViewWindowGUI extends JFrame implements View {
     }
 
     @Override
+    public void fireLoadPlayerWinsCount(PlayerNumber playerNumber) {
+        controller.onLoadPlayerWinsCount(playerNumber);
+    }
+
+    @Override
+    public void showPlayerWinsCount(PlayerNumber playerNumber, int winsCount) {
+        switch (playerNumber) {
+            case PLAYER_1: player1Panel.loadPlayerWinsCount(winsCount);
+                break;
+            case PLAYER_2: player2Panel.loadPlayerWinsCount(winsCount);
+                break;
+        }
+    }
+
+    @Override
     public void fireLoadWhoseTurnInfo() {
         controller.onLoadWhoseTurnInfo();
     }

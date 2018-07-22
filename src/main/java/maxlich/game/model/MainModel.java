@@ -8,7 +8,7 @@ import javax.swing.table.TableModel;
 import java.util.HashMap;
 import java.util.Map;
 
-public class MainModel extends Model {
+public class MainModel implements Model {
     private static final int FIELD_SIZE = 3; //размер поля: 3х3
     private final Figure[][] emptyField = {
             {Figure.NONE, Figure.NONE, Figure.NONE},
@@ -59,6 +59,11 @@ public class MainModel extends Model {
     @Override
     public String getPlayerName(PlayerNumber playerNumber) {
         return playerListMap.get(playerNumber).getName();
+    }
+
+    @Override
+    public int getPlayerWinsCount(PlayerNumber playerNumber) {
+        return playerListMap.get(playerNumber).getWins();
     }
 
     @Override

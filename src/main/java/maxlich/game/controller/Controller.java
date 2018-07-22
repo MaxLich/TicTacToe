@@ -24,8 +24,11 @@ public abstract class Controller {
 
     public abstract void onLoadPartyNumber();
     public abstract void onLoadPlayerName(PlayerNumber playerNumber);
+    public abstract void onLoadPlayerWinsCount(PlayerNumber playerNumber);
+
     public abstract void onLoadWhoseTurnInfo();
     public abstract void onLoadFieldTableModel();
 
     public abstract void onClickFieldCell(int selectedRow, int selectedColumn);
+
 }
