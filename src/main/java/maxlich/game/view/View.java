@@ -20,4 +20,7 @@ public interface View {
     void loadFieldTableModel(TableModel tableModel);
 
     void fireClickFieldCell(int selectedRow, int selectedColumn);
+    void showPartyResult(String resultMessage);
+    void setFieldActivity(boolean isActive);
+
 }

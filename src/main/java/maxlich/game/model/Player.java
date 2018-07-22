@@ -56,4 +56,12 @@ public class Player {
     public void setWins(int wins) {
         this.wins = wins;
     }
+
+    public void incrementWins() {
+        wins++;
+    }
+
+    public void resetWins() {
+        wins = 0;
+    }
 }

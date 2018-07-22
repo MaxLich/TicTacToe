@@ -78,7 +78,7 @@ public class ViewWindowGUI extends JFrame implements View {
     }
 
     private JPanel createBottomPanel() {
-        mainResult = new JLabel("Player 1 won!!!");
+        mainResult = new JLabel(" ");
         mainResult.setFont(Fonts.H2);
         JPanel panel = new JPanel();
         panel.add(mainResult);
@@ -140,6 +140,16 @@ public class ViewWindowGUI extends JFrame implements View {
     @Override
     public void fireClickFieldCell(int selectedRow, int selectedColumn) {
         controller.onClickFieldCell(selectedRow,selectedColumn);
+    }
+
+    @Override
+    public void showPartyResult(String resultMessage) {
+        mainResult.setText(resultMessage);
+    }
+
+    @Override
+    public void setFieldActivity(boolean isActive) {
+        playingFieldPanel.setFieldTableActivity(isActive);
     }
 
     //вывод сообщений

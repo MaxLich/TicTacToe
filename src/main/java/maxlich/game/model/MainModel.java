@@ -1,6 +1,7 @@
 package maxlich.game.model;
 
 import maxlich.game.util.PlayerNumber;
+import maxlich.game.util.ResultType;
 
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
@@ -8,13 +9,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MainModel extends Model {
-    private Figure[][] field = {
-            {Figure.NONE,Figure.NONE,Figure.NONE},
-            {Figure.NONE,Figure.NONE,Figure.NONE},
-            {Figure.NONE,Figure.NONE,Figure.NONE}
+    private static final int FIELD_SIZE = 3; //размер поля: 3х3
+    private final Figure[][] emptyField = {
+            {Figure.NONE, Figure.NONE, Figure.NONE},
+            {Figure.NONE, Figure.NONE, Figure.NONE},
+            {Figure.NONE, Figure.NONE, Figure.NONE}
     };
 
-    private DefaultTableModel fieldTableModel = new DefaultTableModel(field, null) {
+    private DefaultTableModel fieldTableModel = new DefaultTableModel(emptyField, null) {
         @Override
         public int getRowCount() {
             return 3;
@@ -28,14 +30,26 @@ public class MainModel extends Model {
         @Override
         public boolean isCellEditable(int row, int column) {
             return false;
-           // return true;
+            // return true;
         }
     };
 
-    private Map<PlayerNumber, Player> playerListMap = new HashMap<>();
+    private Map<PlayerNumber, Player> playerListMap = new HashMap<>(); //список игроков (в виде пар "номер игрока - игрок")
+    private PlayerNumber whoMakesFirstMove = PlayerNumber.PLAYER_1; //номер игрока, который ходит первым
     private PlayerNumber whoMakesAMove = PlayerNumber.PLAYER_1; //номер игрока, который сейчас совершает ход
+    //private boolean isFieldFull = false; //флаг полного заполнения поля фигурами
+
+    private PlayerNumber winnerInCurrParty = null; //победитель в текущей партии
+    private PlayerNumber winnerOfThisGame = null; //победитель в этой игре (серии партий)
+
+    private int cycleCount = 0; //количество циклов в партии (когда совершили ход оба игрока)
+
     private int partyNumber = 1; //номер партии игры
     private int partyCountInGame = 3; //общее количество партий в игре (может быть равно 1,3,5,7,9)
+
+    private ResultType partyResult = null; //результат текущей партии
+    private ResultType gameResult = null; //результат всей игры (серии партий)
+
 
     public MainModel() {
         playerListMap.put(PlayerNumber.PLAYER_1, new Player(PlayerNumber.PLAYER_1, Figure.X));
@@ -68,7 +82,6 @@ public class MainModel extends Model {
             case PLAYER_2:
                 whoMakesAMove = PlayerNumber.PLAYER_1;
         }
-
     }
 
     public int getPartyCountInGame() {
@@ -82,11 +95,124 @@ public class MainModel extends Model {
     @Override
     public boolean putFigureOnFieldCell(int selectedRow, int selectedColumn) {
         Figure figureAtCell = (Figure) fieldTableModel.getValueAt(selectedRow, selectedColumn);
-        if (figureAtCell != Figure.NONE)
+        if (figureAtCell != Figure.NONE || partyResult != null)
             return false;
 
-        fieldTableModel.setValueAt(playerListMap.get(whoMakesAMove).getFigure(),selectedRow,selectedColumn);
-        changePlayerNumberWhoMakesAMove();
+        fieldTableModel.setValueAt(playerListMap.get(whoMakesAMove).getFigure(), selectedRow, selectedColumn);
+        boolean isFieldFull = isFieldFull();
+        boolean isWinnerFound = checkForWinnerInCurrParty(selectedRow, selectedColumn);
+/*        if (winnerInCurrParty != null)
+            return true;*/
+
+        if (!isWinnerFound && !isFieldFull) {
+            changePlayerNumberWhoMakesAMove();
+        } else {
+            if (isFieldFull && !isWinnerFound)
+                partyResult = ResultType.DRAW;
+        }
+
         return true;
+    }
+
+    // Проверяет, есть ли победитель: true - победитель есть, false - победителя нет (ничья или игра продолжается)
+    private boolean checkForWinnerInCurrParty(final int selectedRow, final int selectedColumn) {
+        if (cycleCount < FIELD_SIZE)
+            return false;
+
+        boolean isThreeInLine;
+        // проверка строки
+        isThreeInLine = checkLineForThreeInLine(LineType.ROW, selectedColumn, selectedRow);
+        if (isThreeInLine)
+            return true;
+
+        // проверка столбца
+        isThreeInLine = checkLineForThreeInLine(LineType.COLUMN, selectedRow, selectedColumn);
+        if (isThreeInLine)
+            return true;
+
+        // проверка прямой диагонали
+        if (selectedColumn == selectedRow) {
+            isThreeInLine = checkLineForThreeInLine(LineType.DIRECT_DIAGONAL, selectedColumn, -1);
+            if (isThreeInLine)
+                return true;
+        }
+
+        // проверка обратной диагонали
+        if (selectedColumn + selectedRow == FIELD_SIZE - 1) {
+            isThreeInLine = checkLineForThreeInLine(LineType.INVERSE_DIAGONAL, selectedColumn, -1);
+        }
+
+        return isThreeInLine;
+    }
+
+    private boolean checkLineForThreeInLine(LineType lineType, int missingIndex, int fixedIndex) {
+        final Figure figureOfCurrPlayer = playerListMap.get(whoMakesAMove).getFigure(); //фигура игрока, который ходит
+        Figure currCellFigure = null; //фигура текущей клетки поля
+        boolean isThreeInLine = true; //три фигуры в ряд?
+        for (int i = 0; i < FIELD_SIZE; i++) {
+            if (i == missingIndex)
+                continue;
+
+            switch (lineType) {
+                case ROW:
+                    currCellFigure = (Figure) fieldTableModel.getValueAt(fixedIndex, i);
+                    break;
+                case COLUMN:
+                    currCellFigure = (Figure) fieldTableModel.getValueAt(i, fixedIndex);
+                    break;
+                case DIRECT_DIAGONAL:
+                    currCellFigure = (Figure) fieldTableModel.getValueAt(i, i);
+                    break;
+                case INVERSE_DIAGONAL:
+                    currCellFigure = (Figure) fieldTableModel.getValueAt(FIELD_SIZE - i - 1, i);
+            }
+
+            if (currCellFigure != figureOfCurrPlayer) {
+                isThreeInLine = false;
+                break;
+            }
+        }
+        if (isThreeInLine) {
+            //winnerInCurrParty = whoMakesAMove;
+            partyResult = ResultType.getResultTypeByWinner(whoMakesAMove);
+            playerListMap.get(whoMakesAMove).incrementWins();
+        }
+
+        return isThreeInLine;
+    }
+
+
+    private boolean isFieldFull() { //проверка поля на заполненность фигурами
+        if (whoMakesAMove == whoMakesFirstMove)
+            cycleCount++;
+        return cycleCount == FIELD_SIZE * FIELD_SIZE / 2 + 1;
+    }
+
+   /* @Override
+    public boolean isFieldFull() {
+        return isFieldFull;
+    }
+
+    @Override
+    public PlayerNumber getWinnerInCurrParty() {
+        return winnerInCurrParty;
+    }*/
+
+    @Override
+    public ResultType getPartyResult() {
+        return partyResult;
+    }
+
+    @Override
+    public ResultType getGameResult() {
+        return gameResult;
+    }
+
+    //тип линии, вдоль которой идём, перебирая клетки поля (элементы матрицы)
+    private enum LineType {
+        ROW, //строка
+        COLUMN, //столбец
+        DIRECT_DIAGONAL, //прямая диагональ
+        INVERSE_DIAGONAL //обратная диагональ
     }
 }
