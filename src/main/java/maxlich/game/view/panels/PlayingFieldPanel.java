@@ -6,9 +6,7 @@ import maxlich.game.view.View;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.table.TableColumn;
-import javax.swing.table.TableColumnModel;
-import javax.swing.table.TableModel;
+import javax.swing.table.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,7 +14,7 @@ import java.awt.event.MouseEvent;
 public class PlayingFieldPanel extends AbstractPanel {
     private static final int CELL_SIZE = 100;
 
-    private JTable fieldTable;
+    private FieldTable fieldTable;
     private WhoseTurnPanel whoseTurnPanel;
 
     public PlayingFieldPanel(View view) {
@@ -30,7 +28,7 @@ public class PlayingFieldPanel extends AbstractPanel {
     protected void addComponents() {
         whoseTurnPanel = new WhoseTurnPanel();
 
-        fieldTable = new JTable();
+        fieldTable = new FieldTable();
         fieldTable.setFillsViewportHeight(true);
         fieldTable.setColumnSelectionAllowed(false);
         fieldTable.setRowSelectionAllowed(false);
@@ -135,6 +133,22 @@ public class PlayingFieldPanel extends AbstractPanel {
                     player1Turn.setSelected(false);
                     player2Turn.setSelected(true);
             }
+        }
+    }
+
+    // класс для поля игры (представленного в виде таблицы 3х3)
+    private class FieldTable extends JTable {
+        public TableCellRenderer getCellRenderer(int row, int column) {
+            return new DefaultTableCellRenderer() {
+                @Override
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected,
+                                                               boolean hasFocus, int row, int column) {
+                    JLabel renderedLabel = (JLabel) super.getTableCellRendererComponent(
+                            table, value, isSelected, hasFocus, row, column);
+                    renderedLabel.setHorizontalAlignment(SwingConstants.CENTER);
+                    return renderedLabel;
+                }
+            };
         }
     }
 }
