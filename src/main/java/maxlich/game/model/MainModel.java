@@ -132,6 +132,7 @@ public class MainModel implements Model {
 
         int player1Wins = playerListMap.get(PlayerNumber.PLAYER_1).getWins();
         int player2Wins = playerListMap.get(PlayerNumber.PLAYER_2).getWins();
+
         if (player1Wins > player2Wins)
             gameResult = ResultType.PLAYER_1_WON;
         else if (player1Wins < player2Wins)
