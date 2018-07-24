@@ -59,6 +59,15 @@ public class MainController extends Controller {
             ResultType gameResult = model.getGameResult();
             if (gameResult != null) {
                 view.showPartyResult("Игра завершена. Итоги всей игры: " + gameResult.getMessage() + "!!!");
+                boolean isNewGame = view.showDialog("Игра завершена", "Начать новую игру?");
+                if (isNewGame) {
+                    model.initNewGame();
+                    onLoadPartyNumber();
+                    onLoadPlayerWinsCount(PlayerNumber.PLAYER_1);
+                    onLoadPlayerWinsCount(PlayerNumber.PLAYER_2);
+                    view.clearPartyResult();
+                    view.setFieldActivity(true);
+                }
             } else {
                 view.showPartyResult("Партия завершена. Итоги партии: " + partyResult.getMessage() + "!!!");
                 boolean isNextParty = view.showDialog("Партия завершена", "Следующая партия?");

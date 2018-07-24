@@ -19,4 +19,5 @@ public interface Model {
     ResultType getGameResult();
 
     void initNewParty();
+    void initNewGame();
 }

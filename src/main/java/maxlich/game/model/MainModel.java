@@ -19,12 +19,12 @@ public class MainModel implements Model {
     private DefaultTableModel fieldTableModel = new DefaultTableModel(EMPTY_FIELD, null) {
         @Override
         public int getRowCount() {
-            return 3;
+            return FIELD_SIZE;
         }
 
         @Override
         public int getColumnCount() {
-            return 3;
+            return FIELD_SIZE;
         }
 
         @Override
@@ -224,6 +224,19 @@ public class MainModel implements Model {
         cycleCount = 0;
         fieldTableModel.setDataVector(EMPTY_FIELD,null);
         partyResult = null;
+    }
+
+    @Override
+    public void initNewGame() {
+        partyNumber = 1;
+        if (whoMakesFirstMove == null)
+            whoMakesFirstMove = PlayerNumber.PLAYER_1;
+        whoMakesAMove = whoMakesFirstMove;
+        cycleCount = 0;
+        fieldTableModel.setDataVector(EMPTY_FIELD,null);
+        partyResult = null;
+        gameResult = null;
+        playerListMap.values().forEach(Player::resetWins);
     }
 
     /* @Override
