@@ -31,4 +31,7 @@ public abstract class Controller {
 
     public abstract void onClickFieldCell(int selectedRow, int selectedColumn);
 
+    public abstract void onStartNewParty();
+
+    public abstract void onStartNewGame();
 }

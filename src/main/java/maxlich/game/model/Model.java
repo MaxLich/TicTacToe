@@ -8,13 +8,13 @@ import javax.swing.table.TableModel;
 public interface Model {
     String getPlayerName(PlayerNumber playerNumber);
     int getPlayerWinsCount(PlayerNumber playerNumber);
+
     TableModel getFieldTableModel();
     PlayerNumber getPlayerNumberWhoMakesAMove();
     int getPartyNumber();
-    boolean putFigureOnFieldCell(int selectedRow, int selectedColumn);
-   // public abstract boolean isFieldFull();
 
-   // public abstract PlayerNumber getWinnerInCurrParty();
+    boolean putFigureOnFieldCell(int selectedRow, int selectedColumn);
+
     ResultType getPartyResult();
     ResultType getGameResult();
 

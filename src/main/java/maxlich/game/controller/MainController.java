@@ -61,26 +61,39 @@ public class MainController extends Controller {
                 view.showPartyResult("Игра завершена. Итоги всей игры: " + gameResult.getMessage() + "!!!");
                 boolean isNewGame = view.showDialog("Игра завершена", "Начать новую игру?");
                 if (isNewGame) {
-                    model.initNewGame();
-                    onLoadPartyNumber();
-                    onLoadPlayerWinsCount(PlayerNumber.PLAYER_1);
-                    onLoadPlayerWinsCount(PlayerNumber.PLAYER_2);
-                    view.clearPartyResult();
-                    view.setFieldActivity(true);
+                    onStartNewGame();
                 }
             } else {
                 view.showPartyResult("Партия завершена. Итоги партии: " + partyResult.getMessage() + "!!!");
                 boolean isNextParty = view.showDialog("Партия завершена", "Следующая партия?");
                 if (isNextParty) {
-                    model.initNewParty();
-                    onLoadPartyNumber();
-                    view.clearPartyResult();
-                    view.setFieldActivity(true);
+                    onStartNewParty();
+                } else {
+                    view.setNewPartyMenuItemActivity(true);
                 }
             }
             return;
         }
 
         onLoadWhoseTurnInfo();
+    }
+
+    @Override
+    public void onStartNewParty() {
+        model.initNewParty();
+        view.setNewPartyMenuItemActivity(false);
+        onLoadPartyNumber();
+        view.clearPartyResult();
+        view.setFieldActivity(true);
+    }
+
+    @Override
+    public void onStartNewGame() {
+        model.initNewGame();
+        onLoadPartyNumber();
+        onLoadPlayerWinsCount(PlayerNumber.PLAYER_1);
+        onLoadPlayerWinsCount(PlayerNumber.PLAYER_2);
+        view.clearPartyResult();
+        view.setFieldActivity(true);
     }
 }

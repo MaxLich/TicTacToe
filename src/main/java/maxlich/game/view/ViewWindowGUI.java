@@ -24,6 +24,7 @@ public class ViewWindowGUI extends JFrame implements View {
     private PlayingFieldPanel playingFieldPanel;
     private JLabel mainTitle;
     private JLabel mainResult;
+    private MenuBar menuBar;
 
     public ViewWindowGUI(String title, Controller controller) throws HeadlessException {
         super(title);
@@ -84,8 +85,9 @@ public class ViewWindowGUI extends JFrame implements View {
             public void windowClosing(WindowEvent e) {
                 controller.onCloseProgram();
             }
-        });
-        setJMenuBar(createMenuBar());*/
+        });*/
+        menuBar = new MenuBar(this);
+        setJMenuBar(menuBar);
         setSize(winWidth, winHeight);
 
         setResizable(false);
@@ -178,6 +180,21 @@ public class ViewWindowGUI extends JFrame implements View {
     @Override
     public void setFieldActivity(boolean isActive) {
         playingFieldPanel.setFieldTableActivity(isActive);
+    }
+
+    @Override
+    public void fireStartNewGame() {
+        controller.onStartNewGame();
+    }
+
+    @Override
+    public void fireStartNewParty() {
+        controller.onStartNewParty();
+    }
+
+    @Override
+    public void setNewPartyMenuItemActivity(boolean isActive) {
+        menuBar.setNewPartyMenuItemActivity(isActive);
     }
 
     //вывод сообщений и диалоговых окон
